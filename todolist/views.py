@@ -4,11 +4,15 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from .models import TodoItem
 from .serializers import TodoItemSerializer
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 
 class TodoItemView(APIView):
-    # authentication_classes = [authentication.TokenAuthentication]
-    permission_classes = []
+    # zum Nutzen des Tokens den man beim Login erhält, und hier immer mit gesendet wird!
+    authentication_classes = [TokenAuthentication] 
+    # man muss eingeloggt sein!
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
         todos = TodoItem.objects.all()
