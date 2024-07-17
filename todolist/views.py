@@ -9,11 +9,12 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from datetime import date
 
+
 class TodoItemView(APIView):
     # zum Nutzen des Tokens den man beim Login erhält, und hier immer mit gesendet wird!
-    # authentication_classes = [TokenAuthentication] 
+    authentication_classes = [TokenAuthentication] 
     # man muss eingeloggt sein!
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
         todos = TodoItem.objects.filter(author=request.user)
@@ -28,11 +29,6 @@ class TodoItemView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    # def post(self, request):
-    #     todo = TodoItem.objects.create(title= request.POST.get('title', ''), author= request.user)
-        
-    #     serializer = TodoItemSerializer(todo, many=True)
-    #     return Response(serializer.data, content_type='application/json')
 
 
 class LoginView(ObtainAuthToken):
