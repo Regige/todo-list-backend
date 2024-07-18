@@ -5,10 +5,13 @@ from rest_framework.response import Response
 from .models import TodoItem
 from .serializers import TodoItemSerializer
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import status
 from datetime import date
 from django.http import Http404
+from django.contrib.auth.models import User
+from .serializers import RegisterSerializer
+from rest_framework import generics
 
 
 
@@ -69,3 +72,10 @@ class LoginView(ObtainAuthToken):
             'user_id': user.pk,
             'email': user.email
         })
+        
+        
+        
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (AllowAny,)
+    serializer_class = RegisterSerializer
